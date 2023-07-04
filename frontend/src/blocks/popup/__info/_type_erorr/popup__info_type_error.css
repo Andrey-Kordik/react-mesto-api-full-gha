@@ -1,0 +1,8 @@
+.popup__info_type_error {
+border: 0;
+border-bottom: 1px solid red;
+}
+
+.popup__info_type_error:focus {
+    border: 1px solid red;
+    }

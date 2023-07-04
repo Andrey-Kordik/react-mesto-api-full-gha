@@ -1,0 +1,7 @@
+.popup__imagebox {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    cursor: auto;
+}

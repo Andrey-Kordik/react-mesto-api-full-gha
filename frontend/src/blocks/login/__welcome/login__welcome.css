@@ -1,0 +1,19 @@
+
+.login__welcome {
+    font-family: 'Inter', Arial, sans-serif;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+@media screen and (max-width: 400px) {
+    .login__welcome {
+        font-size: 20px;
+        line-height: 24px;
+    }
+}
+
+
