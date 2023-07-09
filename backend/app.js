@@ -13,7 +13,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const app = express();
 
-const { PORT = 4000 } = process.env;
+const { PORT = 3000 } = process.env;
 
 app.disable('x-powered-by');
 
@@ -22,7 +22,10 @@ app.use(helmet());
 app.use(bodyParser.json());
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: [
+    'http://domain.kordik.nomoreparties.sbs/',
+    'https://domain.kordik.nomoreparties.sbs/',
+  ],
   credentials: true,
 }));
 
