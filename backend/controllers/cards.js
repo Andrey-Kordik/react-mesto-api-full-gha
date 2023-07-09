@@ -3,8 +3,11 @@ const NotFoundError = require('../errors/NotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
 const ValidationError = require('../errors/ValidationError');
 
-const getCards = (req, res) => Card.find({})
-  .then((cards) => res.status(200).send(cards));
+const getCards = (req, res, next) => {
+  Card.find({})
+    .then((cards) => res.status(200).send(cards))
+    .catch(next);
+};
 
 const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
@@ -13,20 +16,19 @@ const deleteCard = (req, res, next) => {
       if (!card) {
         throw new NotFoundError('Карточка не найдена');
       }
-      if (!card.owner.equals(req.user._id)) {
+      if (!card.owner._id.equals(req.user._id)) {
         throw new ForbiddenError('Нет прав на удаление этой карточки');
-      } else {
-        Card.deleteOne(card)
-          .then(() => res.status(200).send({ message: 'Карточка удалена' }));
       }
+      return Card.findByIdAndRemove(cardId)
+        .then(() => res.status(200).send({ message: 'Карточка удалена' }));
     }).catch(next);
 };
 
 const createCard = (req, res, next) => {
-  const { _id } = req.user;
+  const owner = req.user._id;
   const { name, link } = req.body;
-  Card.create({ name, link, owner: _id })
-    .then((newCard) => res.status(201).send(newCard))
+  Card.create({ name, link, owner })
+    .then((card) => res.status(201).send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new ValidationError('Переданы некорректные данные при создании карточки.');

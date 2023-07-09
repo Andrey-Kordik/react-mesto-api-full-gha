@@ -6,17 +6,33 @@ const NotFoundError = require('../errors/NotFoundError');
 const ValidationError = require('../errors/ValidationError');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 
-const getUsers = (req, res) => User.find({})
-  .then((users) => res.send(users));
+const { NODE_ENV, JWT_SECRET } = process.env;
+
+const getUsers = (req, res, next) => {
+  User.find({})
+    .then((users) => res.send(users))
+    .catch(next);
+};
 
 const getUserById = (req, res, next) => {
-  User.findById(req.params.userId)
-
+  const { userId } = req.user;
+  User.findById(userId)
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь по указанному _id не найден');
       }
       return res.send(user);
+    })
+    .catch(next);
+};
+
+const getMyData = (req, res, next) => {
+  User.findById(req.user._id)
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('Пользователь по указанному _id не найден');
+      }
+      return res.status(200).send(user);
     })
     .catch(next);
 };
@@ -50,7 +66,10 @@ const updateUserData = (req, res, next) => {
   return User.findByIdAndUpdate(
     req.user._id,
     { name, about },
-    { runValidators: true },
+    {
+      new: true,
+      runValidators: true,
+    },
   )
     .then((user) => {
       if (!user) {
@@ -66,7 +85,10 @@ const updateUserAvatar = (req, res, next) => {
   return User.findByIdAndUpdate(
     req.user._id,
     { avatar },
-    { runValidators: true },
+    {
+      new: true,
+      runValidators: true,
+    },
   )
     .then((user) => {
       if (!user) {
@@ -82,8 +104,12 @@ const login = (req, res) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
-
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'super-secret-key', { expiresIn: '7d' });
+      res.cookie('jwt', token, {
+        maxAge: 64000000,
+        httpOnly: true,
+        sameSite: true,
+      });
       return res.status(200).send({ token });
     })
     .catch(() => {
@@ -91,16 +117,11 @@ const login = (req, res) => {
     });
 };
 
-const getMyData = (req, res, next) => {
-  const { _id } = req.user._id;
-  User.find({ _id })
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundError('Пользователь по указанному _id не найден');
-      }
-      return res.status(200).send(user);
-    })
-    .catch(next);
+const logout = (req, res) => {
+  res.clearCookie('jwt', {
+    sameSite: 'none',
+    secure: true,
+  }).send({ message: 'Вы вышли из системы' });
 };
 
 module.exports = {
@@ -111,4 +132,5 @@ module.exports = {
   updateUserAvatar,
   login,
   getMyData,
+  logout,
 };

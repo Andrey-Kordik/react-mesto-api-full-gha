@@ -45,32 +45,32 @@ function App() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    api.getUserData(currentUser)
-      .then((data) => {
-        if (isLoggedIn) {
+    if (isLoggedIn) {
+      api.getUserData(currentUser)
+        .then((data) => {
           setCurrentUser(data)
-        }
-      })
-      .catch(err => {
-        console.log(err.message)
-      })
+        })
+        .catch(err => {
+          console.log(err.message)
+        })
+    }
   }, [isLoggedIn])
 
   useEffect(() => {
-    api.getCards(currentCards)
-      .then((data) => {
-        if (isLoggedIn) {
+    if (isLoggedIn) {
+      api.getCards(currentCards)
+        .then((data) => {
           setCurrentCards(data)
-        }
-      })
-      .catch(err => {
-        console.log(err.message)
-      })
+        })
+        .catch(err => {
+          console.log(err.message)
+        })
+    }
   }, [isLoggedIn])
 
   function handleCardLike(card) {
 
-    const isLiked = card.likes.some(i => i._id === currentUser._id)
+    const isLiked = card.likes.some(i => i === currentUser._id)
 
     api.changeLikeCardStatus(card._id, isLiked)
       .then((newCard) => {
@@ -182,9 +182,9 @@ function App() {
 
   function handleLogin(email, password) {
     auth.authorize(email, password)
-      .then((data) => {
-        localStorage.setItem("jwt", data.token)
+      .then(() => {
         setLoggedIn(true)
+        setUserData(email)
         navigate('/')
       })
       .catch(err => {
@@ -194,7 +194,7 @@ function App() {
 
   function handleRegister(email, password) {
     auth.register(email, password)
-      .then((data) => {
+      .then(() => {
         setIsSuccessfullSign(true)
         navigate("/sign-in")
         handleInfoTooltipOpen()
@@ -207,11 +207,10 @@ function App() {
   }
 
   function verifyToken() {
-    const token = localStorage.getItem("jwt")
-    auth.checkToken(token)
+    auth.checkToken()
       .then((data) => {
         if (data) {
-          setUserData(data.data.email)
+          setUserData(data.email)
           setLoggedIn(true)
           navigate('/')
         }
@@ -220,6 +219,7 @@ function App() {
         }
       })
       .catch(err => {
+        setLoggedIn(false)
         console.log(err.message)
       })
   }
@@ -231,9 +231,14 @@ function App() {
 
 
   function handleSignOut() {
-    setLoggedIn(false);
-    localStorage.removeItem('jwt');
-    navigate('/sign-in');
+    auth.logout()
+      .then(() => {
+        setLoggedIn(false);
+        navigate('/sign-in');
+      })
+      .catch((err) => {
+        console.log(err.message)
+      })
   }
 
   return (
