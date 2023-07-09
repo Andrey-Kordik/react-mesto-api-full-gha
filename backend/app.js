@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const userRoutes = require('./routes/users');
@@ -9,7 +10,6 @@ const { login, createUser } = require('./controllers/users');
 const { auth } = require('./middlewares/auth');
 const errorHandler = require('./middlewares/error-handler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const cors = require('./middlewares/cors');
 
 const app = express();
 
@@ -21,7 +21,7 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(bodyParser.json());
 
-app.use(cors);
+app.use(cors());
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb').then(() => {
   console.log('connected to db');
