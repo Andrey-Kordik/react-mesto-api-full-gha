@@ -39,6 +39,12 @@ app.use('/', cardRoutes);
 app.use(errorLogger);
 app.use(errorHandler);
 
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
 app.listen(PORT, () => {
   console.log(`server is running on port ${PORT}`);
 });
