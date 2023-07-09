@@ -115,7 +115,7 @@ class Api {
 }
 
 export const api = new Api({
-    url: `https://api.domain.kordik.nomoredomains.work`,
+    url: `http://localhost:3000`,
     headers: {
         'Content-Type': 'application/json'
     }

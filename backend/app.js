@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
-const cors = require('cors');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const userRoutes = require('./routes/users');
 const cardRoutes = require('./routes/cards');
@@ -21,7 +21,10 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(bodyParser.json());
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3001',
+  credentials: true,
+}));
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb').then(() => {
   console.log('connected to db');
@@ -38,12 +41,6 @@ app.use('/', cardRoutes);
 
 app.use(errorLogger);
 app.use(errorHandler);
-
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
 
 app.listen(PORT, () => {
   console.log(`server is running on port ${PORT}`);
