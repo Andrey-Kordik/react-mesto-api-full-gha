@@ -11,6 +11,6 @@
 
 IP-адрес x.x.x.x
 
-Frontend https://...
+Frontend https://domain.kordik.nomoreparties.sbs
 
-Backend https://...
+Backend https://api.domain.kordik.nomoredomains.work

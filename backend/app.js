@@ -22,12 +22,12 @@ app.use(helmet());
 app.use(bodyParser.json());
 
 app.use(cors({
-  origin: 'http://localhost:3001',
+  origin: 'https://domain.kordik.nomoreparties.sbs',
   credentials: true,
 }));
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb').then(() => {
-  console.log('connected to db');
+  console.log('connected to MongoDB');
 });
 
 app.use(requestLogger);
