@@ -66,7 +66,7 @@ class MestoAuth {
 }
 
 const auth = new MestoAuth({
-  baseUrl: 'http://api.domain.kordik.nomoredomains.work',
+  baseUrl: 'https://api.domain.kordik.nomoredomains.work',
   headers: {
     'Content-Type': 'application/json',
   },
