@@ -1,7 +1,7 @@
 .header__container {
         text-align: center;
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
 }
 
 @media screen and (max-width: 450px) {
