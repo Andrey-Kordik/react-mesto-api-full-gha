@@ -26,7 +26,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb').then(() => {
 });
 
 app.use(cors({
-  origin: 'http://domain.kordik.nomoreparties.sbs',
+  origin: 'https://domain.kordik.nomoreparties.sbs',
   credentials: true,
 }));
 
