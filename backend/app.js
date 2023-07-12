@@ -2,8 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const cors = require('./middlewares/cors');
 const userRoutes = require('./routes/users');
 const cardRoutes = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
@@ -20,7 +20,11 @@ app.disable('x-powered-by');
 app.use(cookieParser());
 app.use(helmet());
 app.use(bodyParser.json());
-app.use(cors);
+
+app.use(cors({
+  origin: 'http://domain.kordik.nomoreparties.sbs',
+  credentials: true,
+}));
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb').then(() => {
   console.log('connected to MongoDB');
