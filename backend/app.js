@@ -22,7 +22,7 @@ app.use(helmet());
 app.use(bodyParser.json());
 
 app.use(cors({
-  origin: 'http://domain.kordik.nomoreparties.sbs',
+  origin: 'http://domain.kordik.nomoreparties.sbs/',
   credentials: true,
 }));
 
@@ -31,6 +31,12 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb').then(() => {
 });
 
 app.use(requestLogger);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/signin', login);
 app.post('/signup', createUser);
