@@ -37,8 +37,8 @@ class MestoAuth {
   checkToken() {
     return fetch(`${this._url}/users/me`, {
       method: 'GET',
-      credentials: 'include',
       headers: this._headers,
+      credentials: 'include',
       
     })
       .then(res => {
@@ -56,8 +56,9 @@ class MestoAuth {
 
   logout () {
     return fetch(`${this._url}/signout`, {
+      method: 'GET',
+      headers: this._headers,
       credentials: 'include',
-      method: 'GET'
     })
     .then(res => {
       return this._checkResult(res)
