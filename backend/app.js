@@ -22,7 +22,7 @@ app.use(helmet());
 app.use(bodyParser.json());
 
 app.use(cors({
-  origin: 'http://domain.kordik.nomoreparties.sbs/',
+  origin: 'http://domain.kordik.nomoreparties.sbs',
   credentials: true,
 }));
 
