@@ -9,7 +9,7 @@
 
 ## Ссылки на проект
 
-IP-адрес x.x.x.x
+IP-адрес 51.250.18.79
 
 Frontend https://domain.kordik.nomoreparties.sbs
 
