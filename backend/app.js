@@ -21,14 +21,14 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(bodyParser.json());
 
+mongoose.connect('mongodb://127.0.0.1:27017/mestodb').then(() => {
+  console.log('connected to MongoDB');
+});
+
 app.use(cors({
   origin: 'http://domain.kordik.nomoreparties.sbs',
   credentials: true,
 }));
-
-mongoose.connect('mongodb://127.0.0.1:27017/mestodb').then(() => {
-  console.log('connected to MongoDB');
-});
 
 app.use(requestLogger);
 
