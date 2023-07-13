@@ -4,13 +4,10 @@ const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const userRoutes = require('./routes/users');
-const cardRoutes = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
-const { auth } = require('./middlewares/auth');
 const errorHandler = require('./middlewares/error-handler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const NotFoundError = require('./errors/NotFoundError');
+const router = require('./routes/index');
 
 const app = express();
 
@@ -41,14 +38,7 @@ app.get('/crash-test', () => {
 
 app.post('/signin', login);
 app.post('/signup', createUser);
-
-app.use(auth);
-app.use('/users', userRoutes);
-app.use('/cards', cardRoutes);
-
-app.use((req, res, next) => {
-  next(new NotFoundError('Страницы не существует'));
-});
+app.use(router);
 
 app.use(errorLogger);
 app.use(errorHandler);
