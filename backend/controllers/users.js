@@ -60,7 +60,11 @@ const createUser = (req, res, next) => {
       email,
       password: hash,
     }))
-    .then((newUser) => res.status(201).send(newUser))
+    .then((newUser) => {
+      // Удаляем поле password из ответа
+      const userWithoutPassword = newUser.email;
+      res.status(201).send(userWithoutPassword);
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new ValidationError('Переданы некорректные данные при создании пользователя');
