@@ -12,8 +12,4 @@ router.get('/signout', logout);
 router.use('/users', usersRouter);
 router.use('/cards', cardsRouter);
 
-router.use((req, res, next) => {
-  next(new NotFoundError('Страницы не существует'));
-});
-
 module.exports = router;
