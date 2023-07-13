@@ -4,15 +4,15 @@ const {
   getUsers, getUserById, updateUserData, updateUserAvatar, getMyData, logout,
 } = require('../controllers/users');
 
-router.get('/users/me', getMyData);
+router.get('//me', getMyData);
 
-router.patch('/users/me', updateUserData);
+router.patch('//me', updateUserData);
 
-router.patch('/users/me/avatar', updateUserAvatar);
+router.patch('//me/avatar', updateUserAvatar);
 
-router.get('/users', getUsers);
+router.get('/', getUsers);
 
-router.get('/users/:userId', getUserById);
+router.get('//:userId', getUserById);
 
 router.get('/signout', logout);
 
