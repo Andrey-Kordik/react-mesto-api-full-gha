@@ -47,8 +47,9 @@ app.use('/', userRoutes);
 app.use('/', cardRoutes);
 
 app.use((req, res, next) => {
-  next(new NotFoundError('Запрошен несуществующий роут'));
+  next(new NotFoundError('Страницы не существует'));
 });
+
 app.use(errorLogger);
 app.use(errorHandler);
 
