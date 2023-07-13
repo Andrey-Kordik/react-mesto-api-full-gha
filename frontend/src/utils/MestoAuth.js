@@ -25,7 +25,6 @@ class MestoAuth {
       headers: this._headers,
       credentials: 'include',
       body: JSON.stringify({
-        password: password,
         email: email,
       })
     })

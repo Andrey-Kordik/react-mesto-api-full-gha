@@ -194,7 +194,7 @@ function App() {
 
   function handleRegister(email, password) {
     auth.register(email, password)
-      .then(() => {
+      .then((user) => {
         setIsSuccessfullSign(true)
         navigate("/sign-in")
         handleInfoTooltipOpen()
