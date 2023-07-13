@@ -10,6 +10,7 @@ const { login, createUser } = require('./controllers/users');
 const { auth } = require('./middlewares/auth');
 const errorHandler = require('./middlewares/error-handler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const NotFoundError = require('./errors/NotFoundError');
 
 const app = express();
 
@@ -44,6 +45,8 @@ app.post('/signup', createUser);
 app.use(auth);
 app.use('/', userRoutes);
 app.use('/', cardRoutes);
+
+app.use((req, res, next) => next(new NotFoundError('Страницы по запрошенному URL не существует')));
 
 app.use(errorLogger);
 app.use(errorHandler);
