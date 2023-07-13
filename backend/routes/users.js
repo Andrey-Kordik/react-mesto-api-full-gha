@@ -10,7 +10,7 @@ router.patch('/users/me', updateUserData);
 
 router.patch('/users/me/avatar', updateUserAvatar);
 
-router.get('/', getUsers);
+router.get(getUsers);
 
 router.get('/users/:userId', getUserById);
 
