@@ -60,10 +60,7 @@ const createUser = (req, res, next) => {
       email,
       password: hash,
     }))
-    .then((newUser) => res.status(201).send(newUser.name,
-      newUser.about,
-      newUser.avatar,
-      newUser.email)
+    .then((newUser) => res.status(201).send(newUser))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new ValidationError('Переданы некорректные данные при создании пользователя');
