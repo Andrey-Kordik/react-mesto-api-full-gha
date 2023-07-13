@@ -46,11 +46,12 @@ const createUser = (req, res, next) => {
     throw new ValidationError('Не переданы email или пароль');
   }
   User.findOne({ email })
-  .then((existingUser) => {
-    if (existingUser) {
-      throw new ValidationError('Пользователь с таким email уже существует');
-    }
-  return bcrypt.hash(password, 8)
+    .then((existingUser) => {
+      if (existingUser) {
+        throw new ValidationError('Пользователь с таким email уже существует');
+      }
+      return bcrypt.hash(password, 8);
+    })
     .then((hash) => User.create({
       name,
       about,
