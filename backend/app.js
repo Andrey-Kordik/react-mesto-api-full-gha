@@ -26,6 +26,8 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb').then(() => {
   console.log('connected to MongoDB');
 });
 
+app.use(handleNotFound);
+
 app.use(cors({
   origin: 'https://domain.kordik.nomoreparties.sbs',
   credentials: true,
@@ -38,8 +40,6 @@ app.get('/crash-test', () => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
 });
-
-app.use(handleNotFound);
 
 app.post('/signin', login);
 app.post('/signup', createUser);
