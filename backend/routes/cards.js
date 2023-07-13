@@ -4,7 +4,7 @@ const {
   getCards, deleteCard, createCard, putLike, deleteLike,
 } = require('../controllers/cards');
 
-router.get('/cards', getCards);
+router.get('/', getCards);
 
 router.delete('/cards/:cardId', deleteCard);
 
