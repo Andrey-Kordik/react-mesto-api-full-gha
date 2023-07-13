@@ -60,9 +60,6 @@ const createUser = (req, res, next) => {
       password: hash,
     }))
     .then((newUser) => res.status(201).send(
-      newUser.name,
-      newUser.about,
-      newUser.avatar,
       newUser.email,
     ))
     .catch((err) => {
