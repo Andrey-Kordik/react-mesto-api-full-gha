@@ -10,6 +10,7 @@ const { login, createUser } = require('./controllers/users');
 const { auth } = require('./middlewares/auth');
 const errorHandler = require('./middlewares/error-handler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { handleNotFound } = require('./middlewares/notFoundPage');
 
 const app = express();
 
@@ -37,6 +38,8 @@ app.get('/crash-test', () => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
 });
+
+app.use(handleNotFound);
 
 app.post('/signin', login);
 app.post('/signup', createUser);
