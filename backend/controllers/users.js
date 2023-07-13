@@ -42,6 +42,7 @@ const createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
   } = req.body;
+
   if (!email || !password) {
     throw new ValidationError('Не переданы email или пароль');
   }
@@ -59,7 +60,7 @@ const createUser = (req, res, next) => {
       email,
       password: hash,
     }))
-    .then((newUser) => res.status(201).send(newUser.name))
+    .then((newUser) => res.status(201).send(newUser.name, newUser.about))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new ValidationError('Переданы некорректные данные при создании пользователя');
