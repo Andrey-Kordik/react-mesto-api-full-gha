@@ -29,13 +29,12 @@ app.use(cors({
 
 app.use(requestLogger);
 
+app.use(router);
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
 });
-
-app.use(router);
 
 app.use(errorLogger);
 app.use(errorHandler);
