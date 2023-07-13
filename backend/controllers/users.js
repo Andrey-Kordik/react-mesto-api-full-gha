@@ -42,10 +42,6 @@ const createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
   } = req.body;
-
-  if (!email || !password) {
-    throw new ValidationError('Не переданы email или пароль');
-  }
   User.findOne({ email })
     .then((existingUser) => {
       if (existingUser) {
@@ -111,7 +107,7 @@ const updateUserAvatar = (req, res, next) => {
     .catch(next);
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
@@ -126,7 +122,7 @@ const login = (req, res) => {
       return res.status(200).send({ token });
     })
     .catch(() => {
-      throw new UnauthorizedError('Ошибка авторизации');
+      next(new UnauthorizedError('Ошибка авторизации'));
     });
 };
 
