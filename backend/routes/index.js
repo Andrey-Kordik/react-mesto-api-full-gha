@@ -9,7 +9,6 @@ router.post('/signin', login);
 router.post('/signup', createUser);
 
 router.use(auth);
-
 router.get('/signout', logout);
 
 router.use('/users', usersRouter);
