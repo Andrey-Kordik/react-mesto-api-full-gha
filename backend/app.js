@@ -10,6 +10,7 @@ const { login, createUser } = require('./controllers/users');
 const { auth } = require('./middlewares/auth');
 const errorHandler = require('./middlewares/error-handler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { handleNotFound } = require('./middlewares/notFoundPage');
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use('/', cardRoutes);
 
 app.use(errorLogger);
 app.use(errorHandler);
+app.use(handleNotFound);
 
 app.listen(PORT, () => {
   console.log(`server is running on port ${PORT}`);
