@@ -10,7 +10,7 @@ const { login, createUser } = require('./controllers/users');
 const { auth } = require('./middlewares/auth');
 const errorHandler = require('./middlewares/error-handler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const { handleNotFound } = require('./middlewares/notFoundPage');
+const NotFoundError = require('./errors/NotFoundError');
 
 const app = express();
 
@@ -46,8 +46,9 @@ app.use(auth);
 app.use('/', userRoutes);
 app.use('/', cardRoutes);
 
-app.use('/*', handleNotFound);
-
+app.use((req, res, next) => {
+  next(new NotFoundError('Запрошен несуществующий роут'));
+});
 app.use(errorLogger);
 app.use(errorHandler);
 
