@@ -6,8 +6,10 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/NotFoundError');
 const ValidationError = require('../errors/ValidationError');
 const UnauthorizedError = require('../errors/UnauthorizedError');
+const ConflictError = require('../errors/ConflictError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
+const MONGO_DUPLICATE_ERROR_CODE = 11000;
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -42,13 +44,7 @@ const createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
   } = req.body;
-  User.findOne({ email })
-    .then((existingUser) => {
-      if (existingUser) {
-        throw new ValidationError('Пользователь с таким email уже существует');
-      }
-      return bcrypt.hash(password, 8);
-    })
+  bcrypt.hash(password, 8)
     .then((hash) => User.create({
       name,
       about,
@@ -63,9 +59,12 @@ const createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new ValidationError('Переданы некорректные данные при создании пользователя');
+        next(new ValidationError('Переданы некорректные данные при создании пользователя.'));
+      } else if (err.code === MONGO_DUPLICATE_ERROR_CODE) {
+        next(new ConflictError('Пользователь с таким email уже существует.'));
+      } else {
+        next(err);
       }
-      return next(err);
     });
 };
 
@@ -122,7 +121,7 @@ const login = (req, res, next) => {
       return res.status(200).send({ token });
     })
     .catch(() => {
-      next(new UnauthorizedError('Ошибка авторизации'));
+      next(UnauthorizedError('Ошибка авторизации'));
     });
 };
 
