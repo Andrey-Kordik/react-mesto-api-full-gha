@@ -15,8 +15,9 @@ router.get('/signout', logout);
 router.use('/users', usersRouter);
 router.use('/cards', cardsRouter);
 
-router.use(() => {
-  throw new NotFoundError('Страница не найдена');
+router.use((req, res, next) => {
+  const error = new NotFoundError('Страница не найдена');
+  next(error);
 });
 
 module.exports = router;
