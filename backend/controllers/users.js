@@ -118,7 +118,7 @@ const login = (req, res, next) => {
         secure: true,
         sameSite: 'None',
       });
-      return res.status(200).send({ token });
+      return res.status(200).send({ email });
     })
     .catch(() => {
       next(UnauthorizedError('Ошибка авторизации'));
